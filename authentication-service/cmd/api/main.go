@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"authentication/cmd/api/routes"
+
 )
 
 const webPort = "80"
@@ -18,7 +20,7 @@ func main() {
 	app := routes.Config{}
 
 	srv := &http.Server{
-		Addr:    ":" + webPort,
+		Addr:    fmt.Sprintf(":%s", webPort),
 		Handler: app.Routes(),
 	}
 
