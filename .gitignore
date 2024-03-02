@@ -22,3 +22,4 @@ go.work
 
 __MACOSX
 *.code-workspace
+brokerApp
