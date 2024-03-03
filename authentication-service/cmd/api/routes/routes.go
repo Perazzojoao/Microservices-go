@@ -9,7 +9,6 @@ import (
 	"github.com/go-chi/cors"
 
 	"authentication/data"
-
 )
 
 type Config struct {
@@ -32,6 +31,7 @@ func (app *Config) Routes() http.Handler {
 
 	// Routes
 	mux.Use(middleware.Heartbeat("/ping"))
+	mux.Get("/auth", app.Authentication)
 
 	return mux
 }
