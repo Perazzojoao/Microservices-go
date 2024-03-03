@@ -26,4 +26,4 @@ Authentication é um microservice especializado em autenticação de usuários. 
 
 - `pgx`:
 
-	go get github.com/jackc/pgx/v4
+	go get github.com/jackc/pgx/v4/stdlib
