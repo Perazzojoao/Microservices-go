@@ -21,5 +21,6 @@
 go.work
 
 __MACOSX
+db-data
 *.code-workspace
-brokerApp
+*App
