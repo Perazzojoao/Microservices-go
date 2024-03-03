@@ -19,6 +19,8 @@ realizadas com frequência. Contém os seguintes atalhos:
 
 - `build_broker`: Compila projeto broker para o sistema linux
 
+- `build_auth`: Compila projeto authentication para o sistema linux
+
 - `start`: Inicia Front end
 
 - `stop`: Para Front end
