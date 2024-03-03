@@ -6,16 +6,24 @@ Authentication é um microservice especializado em autenticação de usuários. 
 
 - `chi`:
 
-    go get github.com/go-chi/chi/v5
+  go get github.com/go-chi/chi/v5
 
 - `chi middleware`:
 
-    go get github.com/go-chi/chi/v5/middleware
+  go get github.com/go-chi/chi/v5/middleware
 
 - `chi cors`:
 
-    go get github.com/go-chi/cors
+  go get github.com/go-chi/cors
 
 - `bcrypt`:
 
-    go get golang.org/x/crypto/bcrypt
+  go get golang.org/x/crypto/bcrypt
+
+- `pgcon`:
+
+  go get github.com/jackc/pgconn
+
+- `pgx`:
+
+	go get github.com/jackc/pgx/v4
