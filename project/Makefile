@@ -51,3 +51,9 @@ stop:
 	@echo Stopping front end...
 	@taskkill /IM "${FRONT_END_BINARY}" /F
 	@echo "Stopped front end!"
+
+## clear: clear dungling docker images
+clear:
+	@echo Clearing dungling docker images...
+	docker image prune
+	@echo Done!
