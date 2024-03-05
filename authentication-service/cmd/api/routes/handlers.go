@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-
 )
 
 func (app *Config) Authenticate(w http.ResponseWriter, r *http.Request) {
@@ -32,10 +31,10 @@ func (app *Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	payload := jsonResponse{
-		Error:  false,
+		Error:   false,
 		Message: fmt.Sprintf("Logged in as %s", user.Email),
-		Data: 	user,
+		Data:    user,
 	}
 
-	app.writeJSON(w, http.StatusOK, payload)
+	app.writeJSON(w, http.StatusAccepted, payload)
 }
