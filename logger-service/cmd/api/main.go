@@ -10,6 +10,7 @@ import (
 
 	"log-service/cmd/api/routes"
 	"log-service/data"
+
 )
 
 var client *mongo.Client
@@ -38,7 +39,7 @@ func main() {
 	}
 
 	// Iniciar servidor
-	go app.Serve()
+	app.Serve()
 }
 
 func conectToMongo() (*mongo.Client, error) {
