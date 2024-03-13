@@ -15,3 +15,11 @@ Mail é um microservice especializado em enviar emails para diferentes usuários
 - `chi cors`:
 
     go get github.com/go-chi/cors
+
+- `premailer`:
+
+    go get github.com/vanng822/go-premailer/premailer
+
+- `go-simple-mail`:
+
+    go get github.com/xhit/go-simple-mail/v2
