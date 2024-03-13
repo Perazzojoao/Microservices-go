@@ -8,9 +8,13 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+
+	"mailer-service/cmd/api/mailer"
 )
 
-type Config struct{}
+type Config struct {
+	Mailer *mailer.Mail
+}
 
 const WebPort = "80"
 
@@ -29,6 +33,7 @@ func (app *Config) Routes() http.Handler {
 
 	// Routes
 	mux.Use(middleware.Heartbeat("/ping"))
+	mux.Post("/send", app.SendMail)
 
 	return mux
 }
