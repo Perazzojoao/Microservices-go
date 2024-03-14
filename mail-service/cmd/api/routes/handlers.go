@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"log"
 	"net/http"
 
 	"mailer-service/cmd/api/mailer"
@@ -19,6 +20,7 @@ func (app *Config) SendMail(w http.ResponseWriter, r *http.Request) {
 	var requestPayload mailMessage
 	err := app.readJson(w, r, &requestPayload)
 	if err != nil {
+		log.Println(err)
 		app.errorJSON(w, err)
 		return
 	}
@@ -34,6 +36,7 @@ func (app *Config) SendMail(w http.ResponseWriter, r *http.Request) {
 	// Enviando email para destinatário
 	err = app.Mailer.SendSMTPMessage(msg)
 	if err != nil {
+		log.Println(err)
 		app.errorJSON(w, err)
 		return
 	}
