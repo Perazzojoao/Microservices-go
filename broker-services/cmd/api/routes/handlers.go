@@ -5,13 +5,13 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
-
 )
 
 type RequestPayload struct {
 	Action string      `json:"action"`
 	Auth   AuthPayload `json:"auth,omitempty"`
 	Log    LogPayload  `json:"log,omitempty"`
+	Mail   MailPayload `json:"mail,omitempty"`
 }
 
 type AuthPayload struct {
@@ -22,6 +22,13 @@ type AuthPayload struct {
 type LogPayload struct {
 	Name string `json:"name"`
 	Data string `json:"data"`
+}
+
+type MailPayload struct {
+	From    string `json:"from"`
+	To      string `json:"to"`
+	Subject string `json:"subject"`
+	Message string `json:"message"`
 }
 
 func (app *Config) Broker(w http.ResponseWriter, r *http.Request) {
@@ -50,6 +57,8 @@ func (app *Config) HandleSubmission(w http.ResponseWriter, r *http.Request) {
 		app.authenticate(w, RequestPayload.Auth)
 	case "log":
 		app.logItem(w, RequestPayload.Log)
+	case "mail":
+		app.sendMail(w, RequestPayload.Mail)
 	default:
 		app.errorJSON(w, errors.New("invalid action"))
 	}
@@ -79,7 +88,7 @@ func (app *Config) logItem(w http.ResponseWriter, entry LogPayload) {
 
 	// Receber a resposta do serviço de log com o statuscode correto
 	if response.StatusCode != http.StatusAccepted {
-		app.errorJSON(w, errors.New("error calling log service"), http.StatusInternalServerError)
+		app.errorJSON(w, errors.New("error calling log service"))
 		return
 	}
 
@@ -150,4 +159,45 @@ func (app *Config) authenticate(w http.ResponseWriter, a AuthPayload) {
 		app.errorJSON(w, err, http.StatusInternalServerError)
 	}
 
+}
+
+func (app *Config) sendMail(w http.ResponseWriter, msg MailPayload) {
+	// Criar um JSON para enviar ao serviço de email
+	jsonData, _ := json.MarshalIndent(msg, "", "\t")
+
+	// Enviar o JSON para o serviço de email
+	mailServiceURL := "http://mailer-service/send"
+	request, err := http.NewRequest("POST", mailServiceURL, bytes.NewBuffer(jsonData))
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	request.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	response, err := client.Do(request)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+	defer response.Body.Close()
+
+	// Receber a resposta do serviço de email com o statuscode correto
+	if response.StatusCode != http.StatusAccepted {
+		app.errorJSON(w, errors.New("error calling mail service"))
+		return
+	}
+
+	// Criar uma variável para armazenar a resposta do serviço de email
+	var payload = jsonResponse{
+		Error:   false,
+		Message: "Mail sent to " + msg.To,
+	}
+
+	// Escrever a resposta da requisição no formato JSON e definir o status da resposta
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		app.errorJSON(w, err, http.StatusInternalServerError)
+	}
 }
