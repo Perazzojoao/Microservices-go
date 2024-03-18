@@ -108,3 +108,13 @@ services:
       FROM_ADDRESS: "john.smith@example.com"
     depends_on:
       - mailhog
+
+  listener-service:
+    build:
+      context: ./../listener-service
+      dockerfile: ./../listener-service/listener-service.dockerfile
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - rabbitmq
