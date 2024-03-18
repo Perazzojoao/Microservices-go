@@ -4,15 +4,27 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"broker/cmd/api/routes"
+	"broker/database"
 
 )
 
 const webPort = "80"
 
 func main() {
-	app := routes.Config{}
+	// Conectar com rabbitmq
+	rabbitConn, err := database.Connect()
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+	defer rabbitConn.Close()
+
+	app := routes.Config{
+		Rabbit: rabbitConn,
+	}
 
 	log.Printf("Server is running on port:%s\n", webPort)
 
