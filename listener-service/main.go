@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"listener/database"
+	"listener/event"
 )
 
 func main() {
@@ -15,11 +16,19 @@ func main() {
 		os.Exit(1)
 	}
 	defer rabbitConn.Close()
-	log.Println("Connected to RabbitMQ")
 
 	//Começar a ouvir a fila de mensagens
+	log.Println("Listening for messages...")
 
-	// Criar um servidor http
+	// Criar um consumidor de eventos
+	consumer, err := event.NewConsumer(rabbitConn)
+	if err != nil {
+		panic(err)
+	}
 
 	// Observar fila de mensagens e enviar para o servidor http
+	err = consumer.Listen([]string{"log.INFO", "log.WARNING", "log.ERROR"})
+	if err != nil {
+		log.Println(err)
+	}
 }
