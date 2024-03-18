@@ -7,6 +7,7 @@ import (
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
+
 )
 
 func Connect() (*amqp.Connection, error) {
@@ -16,10 +17,11 @@ func Connect() (*amqp.Connection, error) {
 
 	// Não continuar até que a conexão seja estabelecida
 	for {
-		c, err := amqp.Dial("amqp://guest:guest@localhost")
+		c, err := amqp.Dial("amqp://guest:guest@rabbitmq")
 		if err != nil {
 			counts++
 		} else {
+			log.Println("Connected to RabbitMQ")
 			connection = c
 			break
 		}
