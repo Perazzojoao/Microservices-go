@@ -3,14 +3,15 @@ package routes
 import (
 	"fmt"
 	"log"
+	"net"
 	"net/http"
+	"net/rpc"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
 
 	"log-service/data"
-
 )
 
 const (
@@ -54,4 +55,23 @@ func (app *Config) Serve() {
 	if err != nil {
 		log.Panic(err)
 	}
+}
+
+func (app *Config) RpcListen() error {
+	log.Println("Starting RPC server on port ", RpcPort)
+
+	listen, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%s", RpcPort))
+	if err != nil {
+		return err
+	}
+	defer listen.Close()
+
+	for {
+		rpcConn, err := listen.Accept()
+		if err != nil {
+			continue
+		}
+		go rpc.ServeConn(rpcConn)
+	}
+
 }
