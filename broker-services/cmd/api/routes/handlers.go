@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+
+	"broker/event"
 )
 
 type RequestPayload struct {
@@ -56,7 +58,7 @@ func (app *Config) HandleSubmission(w http.ResponseWriter, r *http.Request) {
 	case "auth":
 		app.authenticate(w, RequestPayload.Auth)
 	case "log":
-		app.logItem(w, RequestPayload.Log)
+		app.logEventViaRabbit(w, RequestPayload.Log)
 	case "mail":
 		app.sendMail(w, RequestPayload.Mail)
 	default:
@@ -200,4 +202,41 @@ func (app *Config) sendMail(w http.ResponseWriter, msg MailPayload) {
 	if err != nil {
 		app.errorJSON(w, err, http.StatusInternalServerError)
 	}
+}
+
+func (app *Config) logEventViaRabbit(w http.ResponseWriter, l LogPayload) {
+	err := app.pushToTheQueue(l.Name, l.Data)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	payload := jsonResponse{
+		Error:   false,
+		Message: "logged via RabbitMQ",
+	}
+
+	err = app.writeJSON(w, http.StatusOK, payload)
+	if err != nil {
+		app.errorJSON(w, err, http.StatusInternalServerError)
+	}
+}
+
+func (app *Config) pushToTheQueue(name, msg string) error {
+	emitter, err := event.NewEventEmitter(app.Rabbit)
+	if err != nil {
+		return err
+	}
+
+	payload := LogPayload{
+		Name: name,
+		Data: msg,
+	}
+
+	j, _ := json.Marshal(&payload)
+	err = emitter.Emit(string(j), "log.INFO")
+	if err != nil {
+		return err
+	}
+	return nil
 }
