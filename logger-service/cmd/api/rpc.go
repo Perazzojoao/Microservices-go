@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"log-service/data"
+
 )
 
 // RPCServer é a estrutura que implementa os métodos do servidor RPC
@@ -18,7 +19,7 @@ type RPCPayload struct {
 }
 
 // LogInfo é o método que escreve o payload para o mongoDB
-func (r *RPCServer) LogInfo(payload RPCPayload, resq *string) error {
+func (r *RPCServer) LogInfo(payload RPCPayload, resp *string) error {
 	colecton := client.Database("logs").Collection("logs")
 	_, err := colecton.InsertOne(context.TODO(), data.LogEntry{
 		Name:      payload.Name,
@@ -30,6 +31,6 @@ func (r *RPCServer) LogInfo(payload RPCPayload, resq *string) error {
 		return err
 	}
 
-	*resq = "Processed payload via RPC: " + payload.Name
+	*resp = "Processed payload via RPC: " + payload.Name
 	return nil
 }
