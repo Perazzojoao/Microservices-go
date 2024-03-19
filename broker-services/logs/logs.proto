@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+// The package name is the same as the go package name
+package logs;
+
+// The go_package option specifies the Go package name
+option go_package = "/logs";
+
+// The Log is the message that will be sent to the server
+message Log {
+  string name = 1;
+  string data = 2;
+}
+
+// The LogRequest is the request to the server
+message LogRequest {
+  Log logEntry = 1;
+}
+
+// The LogResponse is the response from the server
+message LogResponse {
+  string result = 1;
+}
+
+// The LogService is the service definition
+service LogService {
+  rpc WriteLog(LogRequest) returns (LogResponse);
+}
