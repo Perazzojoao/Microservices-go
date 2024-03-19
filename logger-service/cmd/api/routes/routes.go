@@ -10,8 +10,10 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
+	"google.golang.org/grpc"
 
 	"log-service/data"
+	"log-service/logs"
 
 )
 
@@ -74,4 +76,21 @@ func (app *Config) RpcListen() error {
 		}
 		go rpc.ServeConn(rpcConn)
 	}
+}
+
+func (app *Config) GrpcListen() {
+	listen, err := net.Listen("tcp", fmt.Sprintf(":%s", GRpcPort))
+	if err != nil {
+		log.Fatalf("failed to listen for gRpc: %v", err)
+	}
+	defer listen.Close()
+
+	s := grpc.NewServer()
+	logs.RegisterLogServiceServer(s, &LogServer{Models: app.Models})
+	log.Println("gRPC server started on port ", GRpcPort)
+
+	if err := s.Serve(listen); err != nil {
+		log.Fatalf("failed to serve gRpc: %v", err)
+	}
+
 }
