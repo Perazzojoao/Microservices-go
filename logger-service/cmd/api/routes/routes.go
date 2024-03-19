@@ -12,6 +12,7 @@ import (
 	"github.com/go-chi/cors"
 
 	"log-service/data"
+
 )
 
 const (
@@ -73,5 +74,4 @@ func (app *Config) RpcListen() error {
 		}
 		go rpc.ServeConn(rpcConn)
 	}
-
 }
