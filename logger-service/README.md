@@ -23,3 +23,7 @@ MongoDB é o banco de dados em que o logger-service irá se conectar e armazenar
 - `mongo-driver`:
 
     go get go.mongodb.org/mongo-driver/mongo
+
+- `grpc`: Necessário para servidores gRpc
+
+    go get google.golang.org/grpc

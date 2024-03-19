@@ -19,3 +19,7 @@ Brocker é um microservice especializado em receber requisições do frontend e 
 - `rabbitmq`: plugin para db rabbitmq
 
     go get github.com/rabbitmq/amqp091-go
+
+- `grpc`: Necessário para servidores gRpc
+
+    go get google.golang.org/grpc
