@@ -11,7 +11,6 @@ import (
 
 	"log-service/cmd/api/routes"
 	"log-service/data"
-
 )
 
 var client *mongo.Client
@@ -47,6 +46,9 @@ func main() {
 
 	// Iniciar servidor RPC
 	go app.RpcListen()
+
+	// Iniciar servidor gRPC
+	go app.GrpcListen()
 
 	// Iniciar servidor
 	app.Serve()
