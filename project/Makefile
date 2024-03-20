@@ -78,3 +78,15 @@ clear:
 	@echo Clearing dungling docker images...
 	docker image prune
 	@echo Done!
+
+## swarm_up: starts all containers in the background without forcing build
+swarm_up:
+	@echo Starting Docker images...
+	docker stack deploy -c swarm.yml goMicroService
+	@echo Docker images started!
+
+## swarm_down: stop docker swarm stack
+swarm_down:
+	@echo Stopping docker swarm stack...
+	docker stack rm goMicroService
+	@echo Done!
