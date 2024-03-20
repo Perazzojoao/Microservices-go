@@ -3,7 +3,7 @@ syntax = "proto3";
 // The package name is the same as the go package name
 package logs;
 
-// The go_package option specifies the Go package name
+// The go_package option specifies the directory where the generated code will be placed
 option go_package = "/logs";
 
 // The Log is the message that will be sent to the server
