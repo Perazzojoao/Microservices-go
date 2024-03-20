@@ -14,7 +14,6 @@ import (
 
 	"log-service/data"
 	"log-service/logs"
-
 )
 
 const (
@@ -92,5 +91,4 @@ func (app *Config) GrpcListen() {
 	if err := s.Serve(listen); err != nil {
 		log.Fatalf("failed to serve gRpc: %v", err)
 	}
-
 }
