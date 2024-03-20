@@ -8,10 +8,9 @@ import (
 
 	"broker/cmd/api/routes"
 	"broker/database"
-
 )
 
-const webPort = "80"
+const webPort = "8080"
 
 func main() {
 	// Conectar com rabbitmq
