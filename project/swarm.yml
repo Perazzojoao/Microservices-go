@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+  font-end:
+    image: perazzojoao/front-end:1.0.0
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      - broker-service
+
   broker-service:
     image: perazzojoao/broker-service:1.0.1
     deploy:
@@ -89,13 +97,3 @@ services:
       POSTGRES_DB: users
     volumes:
       - ./db-data/postgres/:/var/lib/postgresql/data/
-
-  font-end:
-    image: perazzojoao/front-end:1.0.0
-    deploy:
-      mode: replicated
-      replicas: 1
-    ports:
-      - '8081:8081'
-    depends_on:
-      - broker-service
