@@ -14,12 +14,15 @@ services:
       - caddy_config:/config
 
   front-end:
-    image: perazzojoao/front-end:1.0.0
+    image: perazzojoao/front-end:1.0.1
+    env_file:
+      - .env
     deploy:
       mode: replicated
       replicas: 1
     depends_on:
       - broker-service
+      - caddy
 
   broker-service:
     image: perazzojoao/broker-service:1.0.1
@@ -28,6 +31,7 @@ services:
       replicas: 1
     depends_on:
       - listener-service
+      - caddy
 
   authentication-service:
     image: perazzojoao/authentication-service:1.0.0
