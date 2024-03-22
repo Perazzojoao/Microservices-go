@@ -25,7 +25,7 @@ services:
       - caddy
 
   broker-service:
-    image: perazzojoao/broker-service:1.0.1
+    image: perazzojoao/broker-service:1.0.2
     deploy:
       mode: replicated
       replicas: 1
