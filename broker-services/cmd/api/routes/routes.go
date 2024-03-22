@@ -7,7 +7,6 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	amqp "github.com/rabbitmq/amqp091-go"
-
 )
 
 type Config struct {
@@ -28,6 +27,7 @@ func (app *Config) Routes() http.Handler {
 	}))
 
 	// Routes
+	mux.Use(middleware.Logger)
 	mux.Use(middleware.Heartbeat("/ping"))
 	mux.Post("/", app.Broker)
 	mux.Post("/log-grpc", app.logViaGRPC)
