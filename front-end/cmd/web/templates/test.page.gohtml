@@ -67,7 +67,7 @@
 			body: JSON.stringify(payload),
 		}
 
-		fetch('http:\/\/localhost:8080/handler', body)
+		fetch({{print .BrokerURL "/handler"}}, body)
 			.then(response => response.json())
 			.then(data => {
 				sent.innerHTML = JSON.stringify(payload, undefined, 4)
@@ -101,7 +101,7 @@
 			body: JSON.stringify(payload),
 		}
 
-		fetch('http:\/\/localhost:8080/handler', body)
+		fetch({{print .BrokerURL "/handler"}}, body)
 			.then(response => response.json())
 			.then(data => {
 				sent.innerHTML = JSON.stringify(payload, undefined, 4)
@@ -135,7 +135,7 @@
 			body: JSON.stringify(payload),
 		}
 
-		fetch('http:\/\/localhost:8080/log-grpc', body)
+		fetch({{print .BrokerURL "/log-grpc"}}, body)
 			.then(response => response.json())
 			.then(data => {
 				sent.innerHTML = JSON.stringify(payload, undefined, 4)
@@ -169,7 +169,7 @@
 			body: JSON.stringify(payload),
 		}
 
-		fetch('http:\/\/localhost:8080/handler', body)
+		fetch({{print .BrokerURL "/handler"}}, body)
 			.then(response => response.json())
 			.then(data => {
 				sent.innerHTML = JSON.stringify(payload, undefined, 4)
@@ -186,7 +186,7 @@
 	})
 
 	brokerBtn.addEventListener('click', function () {
-		fetch('http:\/\/localhost:8080', {
+		fetch({{.BrokerURL}}, {
 			method: 'POST',
 		})
 			.then(response => response.json())
